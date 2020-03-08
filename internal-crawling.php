@@ -18,48 +18,160 @@ define( 'INTERNAL_CRAWLING_VERSION', '1.0.0' );
 define( 'INTERNAL_CRAWLING_WP_VERSION', '5.0' );
 define( 'INTERNAL_CRAWLING_WP_VERSION_TESTED', '5.3.2' );
 define( 'INTERNAL_CRAWLING_PHP_VERSION', '5.6' );
+define( 'INTERNAL_CRAWLING_PLUGIN_NAME', 'Internal Crawling' );
 define( 'INTERNAL_CRAWLING_SLUG', 'internal_crawling' );
 define( 'INTERNAL_CRAWLING_FILE', __FILE__ );
 define( 'INTERNAL_CRAWLING_PATH', realpath( plugin_dir_path( INTERNAL_CRAWLING_FILE ) ) . '/' );
 define( 'INTERNAL_CRAWLING_INC_PATH', realpath( INTERNAL_CRAWLING_PATH . 'inc/' ) . '/' );
 
-require INTERNAL_CRAWLING_INC_PATH . 'classes/class-internal-crawling-requirements-check.php';
+
+add_action( 'plugins_loaded', '_internal_crawling_init' );
+/**
+ * Plugin init.
+ *
+ * @since 1.0
+ * @author Nelson Amaya
+ */
+function _internal_crawling_init() {
+	// Nothing to do during autosave.
+	if ( defined( 'DOING_AUTOSAVE' ) ) {
+		return;
+	}
+
+	// Check for WordPress and PHP version.
+	if ( ! internal_crawling_pass_requirements() ) {
+		return;
+	}
+
+	// Init the plugin.
+	require_once INTERNAL_CRAWLING_PATH . 'inc/classes/class-internal-crawling-plugin.php';
+
+	$plugin = new Internal_Crawling_Plugin(
+		[
+			'plugin_path' => INTERNAL_CRAWLING_PATH,
+		]
+	);
+
+	$plugin->init();
+}
 
 /**
- * Loads Internal Crawling translations
+ * Check if Internal Crawling is activated on the network.
  *
  * @since 1.0
  * @author Nelson Amaya
  *
- * @return void
+ * return bool True if Internal Crawling is activated on the network.
  */
-function internal_crawling_load_textdomain() {
-	// Load translations from the languages directory.
-	$locale = get_locale();
+function internal_crawling_is_active_for_network() {
+	static $is;
 
-	// This filter is documented in /wp-includes/l10n.php.
-	$locale = apply_filters( 'plugin_locale', $locale, 'internal_crawling' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	load_textdomain( 'internal_crawling', WP_LANG_DIR . '/plugins/internal-crawling-' . $locale . '.mo' );
+	if ( isset( $is ) ) {
+		return $is;
+	}
 
-	load_plugin_textdomain( 'internal_crawling', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	if ( ! is_multisite() ) {
+		$is = false;
+		return $is;
+	}
+
+	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
+	$is = is_plugin_active_for_network( plugin_basename( INTERNAL_CRAWLING_FILE ) );
+
+	return $is;
 }
-add_action( 'plugins_loaded', 'internal_crawling_load_textdomain' );
 
 /**
- * Plugin requirements check and initialization.
+ * Check for WordPress and PHP version.
+ *
+ * @since  1.0
+ * @author Nelson Amaya
+ *
+ * @return bool True if WP and PHP versions are OK.
  */
-$internal_crawling_requirements_check = new Internal_Crawling_Requirements_Check(
-	[
-		'plugin_name'    => 'Internal Crawling',
-		'plugin_file'    => INTERNAL_CRAWLING_FILE,
-		'plugin_version' => INTERNAL_CRAWLING_VERSION,
-		'wp_version'     => INTERNAL_CRAWLING_WP_VERSION,
-		'php_version'    => INTERNAL_CRAWLING_PHP_VERSION,
-	]
-);
+function internal_crawling_pass_requirements() {
+	static $check;
 
-if ( $internal_crawling_requirements_check->check() ) {
-	require INTERNAL_CRAWLING_INC_PATH . 'main.php';
+	if ( isset( $check ) ) {
+		return $check;
+	}
+
+	require_once INTERNAL_CRAWLING_PATH . 'inc/classes/class-internal-crawling-requirements-check.php';
+
+	$requirements_check = new Internal_Crawling_Requirements_Check(
+		[
+			'plugin_name'    => INTERNAL_CRAWLING_PLUGIN_NAME,
+			'plugin_file'    => INTERNAL_CRAWLING_FILE,
+			'plugin_version' => INTERNAL_CRAWLING_VERSION,
+			'wp_version'     => INTERNAL_CRAWLING_WP_VERSION,
+			'php_version'    => INTERNAL_CRAWLING_PHP_VERSION,
+		]
+	);
+
+	$check = $requirements_check->check();
+
+	return $check;
 }
 
-unset( $internal_crawling_requirements_check );
+/**
+ * Load plugin translations.
+ *
+ * @since  1.0
+ * @author Nelson Amaya
+ */
+function internal_crawling_load_translations() {
+	static $done = false;
+
+	if ( $done ) {
+		return;
+	}
+
+	$done = true;
+
+	load_plugin_textdomain( 'internal_crawling', false, dirname( plugin_basename( INTERNAL_CRAWLING_FILE ) ) . '/languages/' );
+}
+
+register_activation_hook( INTERNAL_CRAWLING_FILE, 'internal_crawling_set_activation' );
+/**
+ * Set a transient on plugin activation, it will be used later to trigger activation hooks after the plugin is loaded.
+ * The transient contains the ID of the user that activated the plugin.
+ *
+ * @since  1.0
+ * @see    Internal_Crawling_Plugin->maybe_activate()
+ * @author Nelson Amaya
+ */
+function internal_crawling_set_activation() {
+	if ( ! internal_crawling_pass_requirements() ) {
+		return;
+	}
+
+	if ( internal_crawling_is_active_for_network() ) {
+		set_site_transient( 'internal_crawling_activation', get_current_user_id(), 30 );
+	} else {
+		set_transient( 'internal_crawling_activation', get_current_user_id(), 30 );
+	}
+}
+
+register_deactivation_hook( INTERNAL_CRAWLING_FILE, 'internal_crawling_deactivation' );
+/**
+ * Trigger a hook on plugin deactivation.
+ *
+ * @since  1.0
+ * @author Nelson Amaya
+ */
+function internal_crawling_deactivation() {
+	if ( ! internal_crawling_pass_requirements() ) {
+		return;
+	}
+
+	/**
+	 * Internal Crawling deactivation.
+	 *
+	 * @since  1.0
+	 * @author Nelson Amaya
+	 */
+	do_action( 'internal_crawling_deactivation' );
+}
