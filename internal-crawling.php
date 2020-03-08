@@ -25,14 +25,14 @@ define( 'INTERNAL_CRAWLING_PATH', realpath( plugin_dir_path( INTERNAL_CRAWLING_F
 define( 'INTERNAL_CRAWLING_INC_PATH', realpath( INTERNAL_CRAWLING_PATH . 'inc/' ) . '/' );
 
 
-add_action( 'plugins_loaded', '_internal_crawling_init' );
+add_action( 'plugins_loaded', 'internal_crawling_init' );
 /**
  * Plugin init.
  *
  * @since 1.0
  * @author Nelson Amaya
  */
-function _internal_crawling_init() {
+function internal_crawling_init() {
 	// Nothing to do during autosave.
 	if ( defined( 'DOING_AUTOSAVE' ) ) {
 		return;
