@@ -38,7 +38,7 @@ function internal_crawling_load_textdomain() {
 	$locale = get_locale();
 
 	// This filter is documented in /wp-includes/l10n.php.
-	$locale = apply_filters( 'plugin_locale', $locale, 'internal_crawling' );
+	$locale = apply_filters( 'plugin_locale', $locale, 'internal_crawling' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	load_textdomain( 'internal_crawling', WP_LANG_DIR . '/plugins/internal-crawling-' . $locale . '.mo' );
 
 	load_plugin_textdomain( 'internal_crawling', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
