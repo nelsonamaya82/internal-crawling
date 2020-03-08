@@ -4,41 +4,52 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class to check if the current WordPress and PHP versions meet our requirements.
  *
+ * @since  1.0
  * @author Nelson Amaya
  */
 class Internal_Crawling_Requirements_Check {
 	/**
 	 * Plugin Name
 	 *
-	 * @var string
+	 * @var    string
+	 * @since  1.0
+	 * @access private
 	 */
 	private $plugin_name;
 
 	/**
 	 * Plugin filepath
 	 *
-	 * @var string
+	 * @var    string
+	 * @since  1.0
+	 * @access private
 	 */
 	private $plugin_file;
 
 	/**
 	 * Plugin version
 	 *
-	 * @var string
+	 * @var    string
+	 * @since  1.0
+	 * @access private
 	 */
 	private $plugin_version;
 
 	/**
 	 * Required WordPress version
 	 *
-	 * @var string
+	 * @var    string
+	 * @since  1.0
+	 * @access private
 	 */
 	private $wp_version;
 
 	/**
 	 * Required PHP version
 	 *
-	 * @var string
+	 * @var    string
+	 * @since  1.0
+	 * @access private
 	 */
 	private $php_version;
 
@@ -46,6 +57,7 @@ class Internal_Crawling_Requirements_Check {
 	 * Constructor
 	 *
 	 * @author Nelson Amaya
+	 * @access public
 	 *
 	 * @param array $args {
 	 *     Arguments to populate the class properties.
@@ -68,6 +80,10 @@ class Internal_Crawling_Requirements_Check {
 	/**
 	 * Checks if all requirements are ok, if not, display a notice.
 	 *
+	 * @since  1.0
+	 * @author Nelson Amaya
+	 * @access public
+	 *
 	 * @return bool
 	 */
 	public function check() {
@@ -84,6 +100,10 @@ class Internal_Crawling_Requirements_Check {
 	/**
 	 * Checks if the current PHP version is equal or superior to the required PHP version.
 	 *
+	 * @since  1.0
+	 * @author Nelson Amaya
+	 * @access private
+	 *
 	 * @return bool
 	 */
 	private function php_passes() {
@@ -92,6 +112,10 @@ class Internal_Crawling_Requirements_Check {
 
 	/**
 	 * Checks if the current WordPress version is equal or superior to the required PHP version.
+	 *
+	 * @since  1.0
+	 * @author Nelson Amaya
+	 * @access private
 	 *
 	 * @return bool
 	 */
@@ -103,6 +127,10 @@ class Internal_Crawling_Requirements_Check {
 
 	/**
 	 * Warns if PHP or WP version are less than the defined values.
+	 *
+	 * @since  1.0
+	 * @author Nelson Amaya
+	 * @access public
 	 */
 	public function notice() {
 		if ( ! current_user_can( 'manage_options' ) ) {
