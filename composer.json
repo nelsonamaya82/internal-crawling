@@ -1,13 +1,13 @@
 {
-	"name": "wp-media/package-template",
-	"description": "Repository template for our packages",
-	"homepage": "https://github.com/wp-media/package-template",
+	"name": "nelsonamaya82/internal-crawling",
+	"description": "A WordPress plugin to check how a website web pages are linked together to the home page.",
+	"homepage": "https://github.com/nelsonamaya82/internal-crawling",
 	"license": "GPL-2.0+",
 	"authors": [
 		{
-			"name": "WP Media",
-			"email": "contact@wp-media.me",
-			"homepage": "https://wp-media.me"
+			"name": "Nelson Amaya",
+			"email": "nelsonamaya82@gmail.com",
+			"homepage": "https://github.com/nelsonamaya82"
 		}
 	],
 	"type": "library",
@@ -15,8 +15,11 @@
 		"sort-packages": true
 	},
 	"support": {
-		"issues": "https://github.com/wp-media/package-template/issues",
-		"source": "https://github.com/wp-media/package-template"
+		"issues": "https://github.com/nelsonamaya82/internal-crawling/issues",
+		"source": "https://github.com/nelsonamaya82/internal-crawling"
+	},
+	"require": {
+		"php": ">=5.6.0"
 	},
 	"require-dev": {
 		"php": "^5.6 || ^7",
@@ -27,8 +30,17 @@
 		"wp-coding-standards/wpcs": "^2",
 		"wp-media/phpunit": "dev-master"
 	},
-	"autoload": {},
-	"autoload-dev": {},
+	"autoload": {
+		"psr-4": {
+			"Internal_Crawling\\": "inc/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Internal_Crawling\\Tests\\Unit\\": "tests/Unit",
+			"Internal_Crawling\\Tests\\Integration\\": "tests/Integration"
+		}
+	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/wpmedia-phpunit\" unit path=Tests/Unit",
 		"test-integration": "\"vendor/bin/wpmedia-phpunit\" integration path=Tests/Integration/",
