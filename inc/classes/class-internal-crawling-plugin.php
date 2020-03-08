@@ -42,6 +42,10 @@ class Internal_Crawling_Plugin {
 	public function init() {
 		$this->include_files();
 
+		if ( is_admin() ) {
+			Internal_Crawling_Admin::get_instance()->init();
+		}
+
 		add_action( 'init', [ $this, 'maybe_activate' ] );
 
 		// Load plugin translations.
