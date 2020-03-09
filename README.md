@@ -15,7 +15,10 @@ A WordPress plugin to check how a website web pages are linked together to the h
 2. Click on the `Crawl now!` button to view the results. You'll see:
     * The website’s root URL (i.e. home page).
     * All of the internal hyperlinks (you'll only see the home internal links in this very first version).
-3. Optionally you can copy the shortcode from this same page and use it on any page you want on your website.
+3. Optionally you can copy the shortcode from this same page and use it on any post or page you want on your website. You can copy this shortcode:
+```
+[crawling_results]
+```
 
 Each time you trigger a crawl, the results will be stored temporarily (1 hour) so if you come back to the plugin's settings page within an hour, you'll see the previously saved results. Anyway you can trigger the results all the times you want.
 

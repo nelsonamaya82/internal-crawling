@@ -51,6 +51,8 @@ class Internal_Crawling_Plugin {
 			Internal_Crawling_Assets::get_instance()->init();
 		}
 
+		Internal_Crawling_Front::get_instance()->init();
+
 		add_action( 'init', [ $this, 'maybe_activate' ] );
 
 		// Load plugin translations.

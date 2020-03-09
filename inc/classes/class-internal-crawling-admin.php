@@ -39,6 +39,15 @@ class Internal_Crawling_Admin {
 	protected $title_settings;
 
 	/**
+	 * Template class instance to render templates and partials.
+	 *
+	 * @var    Template
+	 * @since  1.0
+	 * @access protected
+	 */
+	protected $template;
+
+	/**
 	 * The single instance of the class.
 	 *
 	 * @var    object
@@ -62,6 +71,7 @@ class Internal_Crawling_Admin {
 		$this->slug_settings  = INTERNAL_CRAWLING_SLUG;
 		$this->url_settings   = admin_url( 'options-general.php?page=' . $this->slug_settings );
 		$this->title_settings = INTERNAL_CRAWLING_PLUGIN_NAME;
+		$this->template       = new Template();
 	}
 
 	/**
@@ -147,8 +157,7 @@ class Internal_Crawling_Admin {
 	 * @access public
 	 */
 	public function display_settings_page() {
-		$template = new Template();
-		$template->print_template( 'admin/page-settings' );
+		$this->template->print_template( 'admin/page-settings' );
 	}
 
 
