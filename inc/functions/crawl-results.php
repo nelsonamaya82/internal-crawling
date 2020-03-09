@@ -12,8 +12,6 @@ defined( 'ABSPATH' ) || exit;
  * @return array Internal links objects (Link text and URL).
  */
 function internal_crawling_get_internal_links( $page = '' ) {
-	delete_transient( 'internal_crawling_results' );
-
 	// Get transient for previously saved results.
 	$saved_results = get_transient( 'internal_crawling_results' );
 

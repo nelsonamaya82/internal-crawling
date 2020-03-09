@@ -112,6 +112,7 @@ class Internal_Crawling_Assets {
 	 */
 	public function init() {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles_and_scripts' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles_and_scripts' ] );
 	}
 
 	/**
