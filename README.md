@@ -11,8 +11,8 @@ A WordPress plugin to check how a website web pages are linked together to the h
 
 ### Usage
 
-1. Navigate to the Plugin settings page, located in the Admin menu (Internal Crawling menu item).
-2. Click on the `Crawl` button to view the results. You'll see:
+1. Navigate to the Plugin settings page, located in the Settings menu (Internal Crawling menu item).
+2. Click on the `Crawl now!` button to view the results. You'll see:
     * The website’s root URL (i.e. home page).
     * All of the internal hyperlinks (you'll only see the home internal links in this very first version).
 3. Optionally you can copy the shortcode from this same page and use it on any page you want on your website.
