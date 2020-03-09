@@ -44,6 +44,11 @@ class Internal_Crawling_Plugin {
 
 		if ( is_admin() ) {
 			Internal_Crawling_Admin::get_instance()->init();
+			Internal_Crawling_Admin_Ajax::get_instance()->init();
+		}
+
+		if ( ! wp_doing_ajax() ) {
+			Internal_Crawling_Assets::get_instance()->init();
 		}
 
 		add_action( 'init', [ $this, 'maybe_activate' ] );
@@ -72,6 +77,11 @@ class Internal_Crawling_Plugin {
 		if ( file_exists( $this->plugin_path . 'vendor/autoload.php' ) ) {
 			require_once $this->plugin_path . 'vendor/autoload.php';
 		}
+
+		$inc_path = $this->plugin_path . 'inc/';
+
+		require_once $inc_path . 'functions/crawl-results.php';
+		require_once $inc_path . 'functions/i18n.php';
 	}
 
 	/**

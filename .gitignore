@@ -1,2 +1,7 @@
-/vendor/*
-/Tests/env/local/
+# Directories
+/node_modules
+/Tests/env/local
+/vendor
+# Files
+.DS_Store
+/gruntlocalconf.json

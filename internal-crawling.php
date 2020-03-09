@@ -23,6 +23,7 @@ define( 'INTERNAL_CRAWLING_SLUG', 'internal_crawling' );
 define( 'INTERNAL_CRAWLING_FILE', __FILE__ );
 define( 'INTERNAL_CRAWLING_PATH', realpath( plugin_dir_path( INTERNAL_CRAWLING_FILE ) ) . '/' );
 define( 'INTERNAL_CRAWLING_INC_PATH', realpath( INTERNAL_CRAWLING_PATH . 'inc/' ) . '/' );
+define( 'INTERNAL_CRAWLING_URL', plugin_dir_url( INTERNAL_CRAWLING_FILE ) );
 
 
 add_action( 'plugins_loaded', 'internal_crawling_init' );
