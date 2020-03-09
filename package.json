@@ -1,0 +1,21 @@
+{
+	"name": "internal_crawling",
+	"description": "A WordPress plugin to check how a website web pages are linked together to the home page.",
+	"version": "1.0.0",
+	"homepage": "https://github.com/nelsonamaya82/internal-crawling",
+	"license": "GPL-2.0",
+	"private": true,
+	"author": {
+		"name": "Nelson Amaya",
+		"url": "https://github.com/nelsonamaya82"
+	},
+	"devDependencies": {
+		"autoprefixer": "^7.0.1",
+		"grunt": "^1.0.1",
+		"grunt-contrib-cssmin": "^3.0.0",
+		"grunt-contrib-uglify": "^2.1.0",
+		"grunt-contrib-watch": "^1.1.0",
+		"grunt-eslint": "^22.0.0",
+		"grunt-postcss": "^0.8.0"
+	}
+}

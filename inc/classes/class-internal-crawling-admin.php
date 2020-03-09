@@ -1,4 +1,6 @@
 <?php
+use Internal_Crawling\Template;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -145,7 +147,8 @@ class Internal_Crawling_Admin {
 	 * @access public
 	 */
 	public function display_settings_page() {
-		$this->print_template( 'admin/page-settings' );
+		$template = new Template();
+		$template->print_template( 'admin/page-settings' );
 	}
 
 
@@ -218,51 +221,5 @@ class Internal_Crawling_Admin {
 		}
 
 		return 'options-general.php' === $pagenow;
-	}
-
-
-
-	/** ----------------------------------------------------------------------------------------- */
-	/** GENERIC TEMPLATE TOOLS ================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
-
-	/**
-	 * Get a template contents.
-	 *
-	 * @since  1.0
-	 * @author Nelson Amaya
-	 * @access public
-	 *
-	 * @param  string $template The template name.
-	 * @param  mixed  $data     Some data to pass to the template.
-	 * @return string|bool      The page contents. False if the template doesn't exist.
-	 */
-	public function get_template( $template, $data = [] ) {
-		$path = str_replace( '_', '-', $template );
-		$path = INTERNAL_CRAWLING_PATH . 'views/' . $template . '.php';
-
-		if ( ! file_exists( $path ) ) {
-			return false;
-		}
-
-		ob_start();
-		include $path;
-		$contents = ob_get_clean();
-
-		return trim( (string) $contents );
-	}
-
-	/**
-	 * Print a template.
-	 *
-	 * @since  1.0
-	 * @author Nelson Amaya
-	 * @access public
-	 *
-	 * @param string $template The template name.
-	 * @param mixed  $data     Some data to pass to the template.
-	 */
-	public function print_template( $template, $data = [] ) {
-		echo wp_kses_post( $this->get_template( $template, $data ) );
 	}
 }
